@@ -5,6 +5,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -27,6 +28,7 @@ public class HelloWorldTests {
     public void prepareWebDriver(){
         driver = new ChromeDriver();
     }
+
     @Test(description = "Verify successful captcha input")
     public void verifyCaptchaTest(){
         driver.get("https://www.ultimateqa.com/filling-out-forms/");
@@ -67,7 +69,11 @@ public class HelloWorldTests {
 
         //verify obtained text is "Successful"
         Assert.assertEquals(successText, "Success", "successful submission message should be Success");
-
     }
 
+    @AfterMethod
+    public void tearDown() {
+        //terminate webdriver
+        driver.quit();
+    }
 }
