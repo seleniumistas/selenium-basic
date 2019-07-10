@@ -14,10 +14,19 @@ import java.nio.file.Paths;
 
 
 public class HelloWorldTests {
+    private final static int TEN_SECOND = 10;
+
+    private final String RIGHT_NAME_INPUT_ID = "et_pb_contact_name_1";
+    private final String RIGHT_MESSAGE_INPUT_ID = "et_pb_contact_message_1";
+    private final String EQUATION_TEXT_CLASS = "et_pb_contact_captcha_question";
+    private final String RIGHT_ANSWER_INPUT_CSS = ".input.et_pb_contact_captcha";
+    private final String RIGHT_SUBMIT_BUTTON_CSS = "div#et_pb_contact_form_1 button";
+    private final String MESSAGE_TEXT_CSS = "div#et_pb_contact_form_1 div.et-pb-contact-message";
+
     private WebDriver driver;
 
     @BeforeTest
-    public void setUp(){
+    public void setUp() {
         String chromeDriverPath = Paths.get(System.getProperty("user.home"), "drivers", "chromedriver").toString();
 
         // Optional, if not specified, WebDriver will search your path for chromedriver.
@@ -25,50 +34,47 @@ public class HelloWorldTests {
     }
 
     @BeforeMethod
-    public void prepareWebDriver(){
+    public void prepareWebDriver() {
         driver = new ChromeDriver();
     }
 
     @Test(description = "Verify successful captcha input")
-    public void verifyCaptchaTest(){
+    public void verifyCaptchaTest() {
         driver.get("https://www.ultimateqa.com/filling-out-forms/");
 
         //Find name field on the right side
-        WebElement rightNameInputElement = driver.findElement(By.id("et_pb_contact_name_1"));
+        WebElement rightNameInputElement = driver.findElement(By.id(RIGHT_NAME_INPUT_ID));
         //TODO Replace with your own name
         //Enter your name
         rightNameInputElement.sendKeys("Your NAME");
 
         //Find message field on the right side
-        WebElement rightMessageInputElement = driver.findElement(By.id("et_pb_contact_message_1"));
+        WebElement rightMessageInputElement = driver.findElement(By.id(RIGHT_MESSAGE_INPUT_ID));
         //Enter "Hello World!"
         rightMessageInputElement.sendKeys("Hello World!");
 
         //Find equation text
-        String equationText = driver.findElement(By.className("et_pb_contact_captcha_question")).getText();
+        String equationText = driver.findElement(By.className(EQUATION_TEXT_CLASS)).getText();
 
-        String numbers[] =  equationText.split("\\s*\\+\\s*");
+        String[] numbers = equationText.split("\\s*\\+\\s*");
         //Add two numbers
         int total = Integer.parseInt(numbers[0]) + Integer.parseInt(numbers[1]);
 
         //Find answer field
-        final String ANSWER_INPUT_XPATH = "//input[contains(@class, 'input et_pb_contact_captcha')]";
-        WebElement answerInputElement = driver.findElement(By.xpath(ANSWER_INPUT_XPATH));
+        WebElement answerInputElement = driver.findElement(By.cssSelector(RIGHT_ANSWER_INPUT_CSS));
         //Enter the answer
         answerInputElement.sendKeys(String.valueOf(total));
 
         //Find the submit button, and click it
-        final String RIGHT_SUBMIT_BUTTON_XPATH = "//div[@id='et_pb_contact_form_1']//button";
-        driver.findElement(By.xpath(RIGHT_SUBMIT_BUTTON_XPATH)).click();
+        driver.findElement(By.cssSelector(RIGHT_SUBMIT_BUTTON_CSS)).click();
 
-        final String MESSAGE_TEXT_XPATH = "//div[@id='et_pb_contact_form_1']//div[@class='et-pb-contact-message']";
         //Initialize wait
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        //wait for visibility of the element contains "Successful" message, then get the text.
-        String successText = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(MESSAGE_TEXT_XPATH))).getText();
+        WebDriverWait wait = new WebDriverWait(driver, TEN_SECOND);
+        //wait for visibility of the element contains "Success" message, then get the text.
+        String successText = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(MESSAGE_TEXT_CSS))).getText();
 
-        //verify obtained text is "Successful"
-        Assert.assertEquals(successText, "Success", "successful submission message should be Success");
+        //verify obtained text is "Success"
+        Assert.assertEquals(successText, "Success", "Message should be Success");
     }
 
     @AfterMethod
