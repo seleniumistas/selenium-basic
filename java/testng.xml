@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="My Test Suite" verbose="1" >
+    <test name="Hello World Test">
+        <classes>
+            <class name="HelloWorldTests"/>
+        </classes>
+    </test>
+</suite>
