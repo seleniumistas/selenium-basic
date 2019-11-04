@@ -9,7 +9,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 
 class HelloWorldTests(unittest.TestCase):
-    TEN_SECOND = 10
+    TEN_SECONDS = 10
 
     RIGHT_NAME_INPUT_ID = "et_pb_contact_name_1"
     RIGHT_MESSAGE_INPUT_ID = "et_pb_contact_message_1"
@@ -30,32 +30,32 @@ class HelloWorldTests(unittest.TestCase):
         driver.get("https://www.ultimateqa.com/filling-out-forms/")
 
         # Find right input field
-        right_name_input_element = driver.find_element(By.ID, HelloWorldTests.RIGHT_NAME_INPUT_ID)
+        right_name_input_element = driver.find_element(By.ID, self.RIGHT_NAME_INPUT_ID)
         # TODO change it to your own name
         # Enter your name to right input field
         right_name_input_element.send_keys("My Name")
 
         # find right message field
-        right_message_input_element = driver.find_element(By.ID, HelloWorldTests.RIGHT_MESSAGE_INPUT_ID)
+        right_message_input_element = driver.find_element(By.ID, self.RIGHT_MESSAGE_INPUT_ID)
         # enter "Hello World!"
         right_message_input_element.send_keys("Hello World!")
 
         # find the equation text
-        equation_text = driver.find_element(By.CLASS_NAME, HelloWorldTests.EQUATION_TEXT_CLASS).text
+        equation_text = driver.find_element(By.CLASS_NAME, self.EQUATION_TEXT_CLASS).text
         # extract numbers
         numbers = list(map(int, re.split(r"\s*\+\s*", equation_text)))
         total = sum(numbers)
 
         # find the answer field
-        answer_input_element = driver.find_element(By.CSS_SELECTOR, HelloWorldTests.RIGHT_ANSWER_INPUT_CSS)
+        answer_input_element = driver.find_element(By.CSS_SELECTOR, self.RIGHT_ANSWER_INPUT_CSS)
         # enter the answer
         answer_input_element.send_keys(total)
         # find the submit button and click it
-        driver.find_element(By.CSS_SELECTOR, HelloWorldTests.RIGHT_SUBMIT_BUTTON_CSS).click()
+        driver.find_element(By.CSS_SELECTOR, self.RIGHT_SUBMIT_BUTTON_CSS).click()
 
         # Wait for visibility of message
-        success_text = WebDriverWait(driver, HelloWorldTests.TEN_SECOND).until(
-            EC.visibility_of_element_located((By.CSS_SELECTOR, HelloWorldTests.MESSAGE_TEXT_CSS))).text
+        success_text = WebDriverWait(driver, self.TEN_SECONDS).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, self.MESSAGE_TEXT_CSS))).text
 
         # Verify obtained text is "Success"
         self.assertEqual(success_text, "Success", "Message should be Success")
