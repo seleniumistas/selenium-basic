@@ -11,7 +11,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
-        <testngVersion>6.14.3</testngVersion>
+        <testngVersion>7.7.0</testngVersion>
         <seleniumVersion>3.141.59</seleniumVersion>
         <surefireVersion>3.0.0-M3</surefireVersion>
     </properties>
